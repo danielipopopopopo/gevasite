@@ -60,28 +60,10 @@ const StepIndicator: React.FC<{ step: Step }> = ({ step }) => (
     </div>
 );
 
-const slideVariants = {
-    enter: (direction: number) => ({
-        x: direction > 0 ? '100% ' : '-100%',
-        opacity: 0,
-        zIndex: 0
-    }),
-    center: {
-        x: 0,
-        opacity: 1,
-        zIndex: 10
-    },
-    exit: (direction: number) => ({
-        x: direction < 0 ? '100%' : '-100%',
-        opacity: 0,
-        zIndex: 0
-    }),
-};
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart }) => {
     const { t, i18n } = useTranslation();
     const [step, setStep] = useState<Step>(1);
-    const [direction, setDirection] = useState<number>(0);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -98,7 +80,6 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
     const total = subtotal + deliveryFee;
 
     const goTo = (next: Step) => {
-        setDirection(next > step ? 1 : -1);
         setStep(next);
     };
 
@@ -106,7 +87,6 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
         onClose();
         setTimeout(() => {
             setStep(1);
-            setDirection(0);
         }, 500);
     };
 
@@ -188,19 +168,16 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                             </div>
                         )}
 
-                        {/* Step Content — animated */}
-                        <div className="flex-1 overflow-hidden relative">
-                            <AnimatePresence initial={false} custom={direction}>
+                        {/* Step Content */}
+                        <div className="flex-1 overflow-y-auto">
+                            <AnimatePresence mode="wait" initial={false}>
                                 {step === 1 && (
                                     <motion.div
                                         key="step1"
-                                        custom={direction}
-                                        variants={slideVariants as any}
-                                        initial="enter"
-                                        animate="center"
-                                        exit="exit"
-                                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                                        className="absolute inset-0 overflow-y-auto"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.25 }}
                                     >
                                         {/* Cart Items */}
                                         <div className="px-8 lg:px-12 py-10 space-y-10">
@@ -241,91 +218,82 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                 {step === 2 && (
                                     <motion.div
                                         key="step2"
-                                        custom={direction}
-                                        variants={slideVariants as any}
-                                        initial="enter"
-                                        animate="center"
-                                        exit="exit"
-                                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                                        className="absolute inset-0 overflow-y-auto"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.25 }}
                                     >
-                                        <div className="px-8 lg:px-12 py-10 space-y-4 relative z-20">
+                                        <div className="px-8 lg:px-12 py-10 space-y-4">
                                             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-color-text-tertiary opacity-50 mb-6">Contact Information</p>
                                             <input
                                                 type="text"
                                                 name="name"
                                                 placeholder={t('name')}
                                                 value={formData.name}
-                                                required
-                                                className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30 relative z-30"
                                                 onChange={handleInputChange}
+                                                className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                             />
-                                            <div className="grid grid-cols-2 gap-3 relative z-30">
+                                            <div className="grid grid-cols-2 gap-3">
                                                 <input
                                                     type="email"
                                                     name="email"
                                                     placeholder={t('email')}
                                                     value={formData.email}
-                                                    required
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
                                                     type="tel"
                                                     name="phone"
                                                     placeholder={t('phone')}
                                                     value={formData.phone}
-                                                    required
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                             </div>
                                             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-color-text-tertiary opacity-50 mt-8 mb-2 pt-4">Delivery Address</p>
-                                            <div className="grid grid-cols-2 gap-3 relative z-30">
+                                            <div className="grid grid-cols-2 gap-3">
                                                 <input
                                                     type="text"
                                                     name="city"
                                                     placeholder={t('city')}
                                                     value={formData.city}
-                                                    required
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
                                                     type="text"
                                                     name="street"
                                                     placeholder={t('street')}
                                                     value={formData.street}
-                                                    required
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                             </div>
-                                            <div className="grid grid-cols-3 gap-3 relative z-30">
+                                            <div className="grid grid-cols-3 gap-3">
                                                 <input
                                                     type="text"
                                                     name="houseNum"
                                                     placeholder={t('houseNum')}
                                                     value={formData.houseNum}
-                                                    required
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
                                                     type="text"
                                                     name="floor"
                                                     placeholder={t('floor')}
                                                     value={formData.floor}
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
                                                     type="text"
                                                     name="apartment"
                                                     placeholder={t('apartment')}
                                                     value={formData.apartment}
-                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                     onChange={handleInputChange}
+                                                    className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                             </div>
                                         </div>
@@ -335,13 +303,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                 {step === 3 && (
                                     <motion.div
                                         key="step3"
-                                        custom={direction}
-                                        variants={slideVariants as any}
-                                        initial="enter"
-                                        animate="center"
-                                        exit="exit"
-                                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                                        className="absolute inset-0 overflow-y-auto"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.25 }}
                                     >
                                         <div className="px-8 lg:px-12 py-10 space-y-8">
                                             {/* Order Summary */}
@@ -393,6 +358,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                 )}
                             </AnimatePresence>
                         </div>
+
 
                         {/* Footer — actions */}
                         {items.length > 0 && (

@@ -34,10 +34,10 @@ const StepIndicator: React.FC<{ step: Step }> = ({ step }) => (
                 <div className="flex flex-col items-center gap-1">
                     <div
                         className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-500 ${s < step
-                                ? 'bg-color-gold border-color-gold text-black'
-                                : s === step
-                                    ? 'border-color-gold text-color-gold bg-transparent'
-                                    : 'border-color-border text-color-text-tertiary bg-transparent'
+                            ? 'bg-color-gold border-color-gold text-black'
+                            : s === step
+                                ? 'border-color-gold text-color-gold bg-transparent'
+                                : 'border-color-border text-color-text-tertiary bg-transparent'
                             }`}
                     >
                         {s < step ? <Check size={12} /> : s}
@@ -61,17 +61,27 @@ const StepIndicator: React.FC<{ step: Step }> = ({ step }) => (
 );
 
 const slideVariants = {
-    enterFromRight: { x: '100%', opacity: 0 },
-    enterFromLeft: { x: '-100%', opacity: 0 },
-    center: { x: 0, opacity: 1 },
-    exitToLeft: { x: '-100%', opacity: 0 },
-    exitToRight: { x: '100%', opacity: 0 },
+    enter: (direction: number) => ({
+        x: direction > 0 ? '100%' : '-100%',
+        opacity: 0,
+        zIndex: 0
+    }),
+    center: {
+        x: 0,
+        opacity: 1,
+        zIndex: 1
+    },
+    exit: (direction: number) => ({
+        x: direction < 0 ? '100%' : '-100%',
+        opacity: 0,
+        zIndex: 0
+    }),
 };
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart }) => {
     const { t, i18n } = useTranslation();
     const [step, setStep] = useState<Step>(1);
-    const [direction, setDirection] = useState<1 | -1>(1); // 1 = forward, -1 = backward
+    const [direction, setDirection] = useState<number>(0);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -95,7 +105,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
     const handleClose = () => {
         onClose();
         // Reset step after panel closes
-        setTimeout(() => setStep(1), 500);
+        setTimeout(() => {
+            setStep(1);
+            setDirection(0);
+        }, 500);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -177,13 +190,15 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
 
                         {/* Step Content — animated */}
                         <div className="flex-1 overflow-hidden relative">
-                            <AnimatePresence mode="wait" initial={false}>
+                            <AnimatePresence initial={false} custom={direction}>
                                 {step === 1 && (
                                     <motion.div
                                         key="step1"
-                                        initial={direction === 1 ? slideVariants.enterFromRight : slideVariants.enterFromLeft}
-                                        animate={slideVariants.center}
-                                        exit={direction === 1 ? slideVariants.exitToLeft : slideVariants.exitToRight}
+                                        custom={direction}
+                                        variants={slideVariants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
                                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                                         className="absolute inset-0 overflow-y-auto"
                                     >
@@ -226,15 +241,17 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                 {step === 2 && (
                                     <motion.div
                                         key="step2"
-                                        initial={direction === 1 ? slideVariants.enterFromRight : slideVariants.enterFromLeft}
-                                        animate={slideVariants.center}
-                                        exit={direction === 1 ? slideVariants.exitToLeft : slideVariants.exitToRight}
+                                        custom={direction}
+                                        variants={slideVariants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
                                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                                         className="absolute inset-0 overflow-y-auto"
                                     >
                                         <div className="px-8 lg:px-12 py-10 space-y-4">
                                             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-color-text-tertiary opacity-50 mb-6">Contact Information</p>
-                                            <input type="text" name="name" placeholder={t('name')} value={formData.name} required className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30" onChange={handleInputChange} />
+                                            <input autoFocus type="text" name="name" placeholder={t('name')} value={formData.name} required className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30" onChange={handleInputChange} />
                                             <div className="grid grid-cols-2 gap-3">
                                                 <input type="email" name="email" placeholder={t('email')} value={formData.email} required className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30" onChange={handleInputChange} />
                                                 <input type="tel" name="phone" placeholder={t('phone')} value={formData.phone} required className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30" onChange={handleInputChange} />
@@ -256,9 +273,11 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                 {step === 3 && (
                                     <motion.div
                                         key="step3"
-                                        initial={direction === 1 ? slideVariants.enterFromRight : slideVariants.enterFromLeft}
-                                        animate={slideVariants.center}
-                                        exit={direction === 1 ? slideVariants.exitToLeft : slideVariants.exitToRight}
+                                        custom={direction}
+                                        variants={slideVariants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
                                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                                         className="absolute inset-0 overflow-y-auto"
                                     >

@@ -17,6 +17,8 @@ interface CartProps {
     onRemove: (id: string) => void;
     onUpdateQuantity: (id: string, delta: number) => void;
     onClearCart: () => void;
+    isDemo?: boolean;
+    onDemoComplete?: () => void;
 }
 
 type Step = 1 | 2 | 3;
@@ -61,7 +63,7 @@ const StepIndicator: React.FC<{ step: Step }> = ({ step }) => (
 );
 
 
-const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart }) => {
+const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart, isDemo, onDemoComplete }) => {
     const { t, i18n } = useTranslation();
     const [step, setStep] = useState<Step>(1);
     const [formData, setFormData] = useState({
@@ -98,6 +100,30 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
     const isShippingValid = formData.name && formData.email && formData.phone &&
         formData.city && formData.street && formData.houseNum;
 
+    React.useEffect(() => {
+        if (isDemo && items.length > 0) {
+            // Populate demo data
+            setFormData({
+                name: 'Daniel Demo',
+                email: 'danielipopopopopo@gmail.com',
+                phone: '050-0000000',
+                city: 'דוגמה',
+                street: 'דרך הדרכים',
+                houseNum: '2',
+                floor: '1',
+                apartment: '1'
+            });
+
+            // Trigger order after a short delay
+            const timer = setTimeout(() => {
+                handleOrderSuccess({ id: 'DEMO-ORDER-' + Date.now() });
+                if (onDemoComplete) onDemoComplete();
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [isDemo, items.length]);
+
     const handleOrderSuccess = async (details: any) => {
         const fullAddress = `${formData.city}, ${formData.street} ${formData.houseNum}, קומה ${formData.floor}, דירה ${formData.apartment}`;
         const templateParams = {
@@ -106,6 +132,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
             customer_email: formData.email,
             customer_phone: formData.phone,
             order_id: details.id,
+            ORDER_ID: details.id, // Support for uppercase template tags
             address: fullAddress,
             orders: items.map(item => ({
                 name: item.name,
@@ -113,6 +140,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                 units: item.quantity
             })),
             total: total,
+            TOTAL: total, // Support for uppercase template tags
             'cost.shipping': 0,
             'cost.tax': 0
         };

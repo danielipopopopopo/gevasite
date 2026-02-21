@@ -17,6 +17,7 @@ interface CartProps {
     onRemove: (id: string) => void;
     onUpdateQuantity: (id: string, delta: number) => void;
     onClearCart: () => void;
+    user?: { name: string; email: string; birthMonth: number };
 }
 
 type Step = 1 | 2 | 3;
@@ -61,7 +62,7 @@ const StepIndicator: React.FC<{ step: Step }> = ({ step }) => (
 );
 
 
-const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart }) => {
+const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity, onClearCart, user }) => {
     const { t, i18n } = useTranslation();
     const [step, setStep] = useState<Step>(1);
     const [formData, setFormData] = useState({
@@ -77,7 +78,13 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
 
     const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const deliveryFee = items.length > 0 ? 20 : 0;
-    const total = subtotal + deliveryFee;
+
+    // Birthday Discount Logic
+    const currentMonth = new Date().getMonth() + 1;
+    const isBirthdayMonth = user && user.birthMonth === currentMonth;
+    const birthdayDiscount = isBirthdayMonth ? subtotal * 0.15 : 0;
+
+    const total = subtotal + deliveryFee - birthdayDiscount;
 
     const goTo = (next: Step) => {
         setStep(next);
@@ -341,34 +348,39 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                 </div>
                                                 <div className="flex justify-between items-end">
                                                     <span className="text-sm font-bold uppercase tracking-widest">{t('total')}</span>
-                                                    <span className="text-3xl font-display text-color-gold italic">{t('shekels')}{total}</span>
+                                                    <div className="text-right">
+                                                        {isBirthdayMonth && (
+                                                            <p className="text-[8px] text-color-gold uppercase tracking-widest mb-1">הנחת יום הולדת 15%- כלולה</p>
+                                                        )}
+                                                        <span className="text-3xl font-display text-color-gold italic">{t('shekels')}{total.toFixed(2)}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            {/* Shipping to */}
-                                            <div className="glass-luxury border border-color-border/30 p-4 space-y-1">
-                                                <p className="text-[8px] font-bold uppercase tracking-[0.3em] opacity-40">Shipping To</p>
-                                                <p className="text-sm font-display">{formData.name}</p>
-                                                <p className="text-xs opacity-60">{formData.city}, {formData.street} {formData.houseNum}</p>
-                                                <p className="text-xs opacity-40">{formData.email} · {formData.phone}</p>
-                                            </div>
+                                                {/* Shipping to */}
+                                                <div className="glass-luxury border border-color-border/30 p-4 space-y-1">
+                                                    <p className="text-[8px] font-bold uppercase tracking-[0.3em] opacity-40">Shipping To</p>
+                                                    <p className="text-sm font-display">{formData.name}</p>
+                                                    <p className="text-xs opacity-60">{formData.city}, {formData.street} {formData.houseNum}</p>
+                                                    <p className="text-xs opacity-40">{formData.email} · {formData.phone}</p>
+                                                </div>
 
-                                            {/* PayPal */}
-                                            <div className="pt-2">
-                                                <PayPalButtons
-                                                    style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
-                                                    createOrder={(_data, actions) => {
-                                                        return actions.order.create({
-                                                            intent: 'CAPTURE',
-                                                            purchase_units: [{ amount: { currency_code: 'ILS', value: total.toString() } }],
-                                                        });
-                                                    }}
-                                                    onApprove={(_data, actions) => {
-                                                        return actions.order!.capture().then((details) => {
-                                                            handleOrderSuccess(details);
-                                                        });
-                                                    }}
-                                                />
+                                                {/* PayPal */}
+                                                <div className="pt-2">
+                                                    <PayPalButtons
+                                                        style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
+                                                        createOrder={(_data, actions) => {
+                                                            return actions.order.create({
+                                                                intent: 'CAPTURE',
+                                                                purchase_units: [{ amount: { currency_code: 'ILS', value: total.toFixed(2) } }],
+                                                            });
+                                                        }}
+                                                        onApprove={(_data, actions) => {
+                                                            return actions.order!.capture().then((details) => {
+                                                                handleOrderSuccess(details);
+                                                            });
+                                                        }}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -387,9 +399,15 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                 <span>{t('deliveryFee')}</span>
                                                 <span>{t('shekels')}{deliveryFee}</span>
                                             </div>
+                                            {isBirthdayMonth && (
+                                                <div className="flex justify-between text-color-gold text-[10px] font-bold uppercase tracking-[0.2em]">
+                                                    <span>הנחת יום הולדת (15%-)</span>
+                                                    <span>-{t('shekels')}{birthdayDiscount.toFixed(2)}</span>
+                                                </div>
+                                            )}
                                             <div className="flex justify-between items-end pt-2 border-t border-color-border/10">
                                                 <span className="text-lg font-bold uppercase tracking-widest">{t('total')}</span>
-                                                <span className="text-4xl font-display text-color-gold italic">{t('shekels')}{total}</span>
+                                                <span className="text-4xl font-display text-color-gold italic">{t('shekels')}{total.toFixed(2)}</span>
                                             </div>
                                         </div>
                                         <button

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
     cartCount: number;
     onCartClick: () => void;
+    user?: any;
+    onAuthClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
+const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthClick }) => {
     const { t, i18n } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -47,6 +49,13 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
                 <div className="flex items-center gap-8">
                     <button onClick={toggleLanguage} className="text-[10px] font-bold tracking-[0.2em] uppercase text-color-text-secondary hover:text-color-gold transition-colors">
                         {t('language')}
+                    </button>
+
+                    <button onClick={onAuthClick} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors">
+                        <User size={20} strokeWidth={1.5} />
+                        {user && (
+                            <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">{user.name}</span>
+                        )}
                     </button>
 
                     <button onClick={onCartClick} className="relative group p-2 text-color-text-secondary hover:text-color-gold transition-colors">

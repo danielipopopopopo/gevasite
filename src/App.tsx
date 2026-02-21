@@ -5,6 +5,8 @@ import { ChevronDown, Send } from 'lucide-react';
 import Header from './components/Header';
 import ProductCard from './components/ProductCard';
 import Cart from './components/Cart';
+import AuthModal from './components/AuthModal';
+import BirthdayPopup from './components/BirthdayPopup';
 import type { Product } from './data/products';
 import { PRODUCTS } from './data/products';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -18,12 +20,31 @@ function App() {
   const { t, i18n } = useTranslation();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isBirthdayPopupOpen, setIsBirthdayPopupOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   useEffect(() => {
     document.body.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   }, [i18n.language]);
+
+  useEffect(() => {
+    // Show birthday popup on entry
+    const hasSeenPopup = localStorage.getItem('birthday_popup_seen');
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => setIsBirthdayPopupOpen(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleAuthSuccess = (userData: any) => {
+    setUser(userData);
+    setIsAuthModalOpen(false);
+    setIsBirthdayPopupOpen(false);
+    localStorage.setItem('birthday_popup_seen', 'true');
+  };
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {
@@ -59,7 +80,12 @@ function App() {
       intent: "capture"
     }}>
       <div className="min-h-screen relative bg-color-bg">
-        <Header cartCount={cartItems.length} onCartClick={() => setIsCartOpen(true)} />
+        <Header
+          cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+          onCartClick={() => setIsCartOpen(true)}
+          user={user}
+          onAuthClick={() => setIsAuthModalOpen(true)}
+        />
 
         {/* LUXURY HERO */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -172,6 +198,22 @@ function App() {
           onRemove={removeFromCart}
           onUpdateQuantity={updateQuantity}
           onClearCart={() => setCartItems([])}
+          user={user}
+        />
+
+        <BirthdayPopup
+          isOpen={isBirthdayPopupOpen}
+          onClose={() => {
+            setIsBirthdayPopupOpen(false);
+            localStorage.setItem('birthday_popup_seen', 'true');
+          }}
+          onSignUp={() => setIsAuthModalOpen(true)}
+        />
+
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onSuccess={handleAuthSuccess}
         />
       </div>
     </PayPalScriptProvider>

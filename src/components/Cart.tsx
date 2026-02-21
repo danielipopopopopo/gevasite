@@ -231,6 +231,8 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                 placeholder={t('name')}
                                                 value={formData.name}
                                                 onChange={handleInputChange}
+                                                required
+                                                autoComplete="name"
                                                 className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                             />
                                             <div className="grid grid-cols-2 gap-3">
@@ -240,6 +242,8 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                     placeholder={t('email')}
                                                     value={formData.email}
                                                     onChange={handleInputChange}
+                                                    required
+                                                    autoComplete="email"
                                                     className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
@@ -248,6 +252,8 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                     placeholder={t('phone')}
                                                     value={formData.phone}
                                                     onChange={handleInputChange}
+                                                    required
+                                                    autoComplete="tel"
                                                     className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                             </div>
@@ -259,6 +265,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                     placeholder={t('city')}
                                                     value={formData.city}
                                                     onChange={handleInputChange}
+                                                    required
                                                     className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input
@@ -267,6 +274,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                     placeholder={t('street')}
                                                     value={formData.street}
                                                     onChange={handleInputChange}
+                                                    required
                                                     className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                             </div>
@@ -277,6 +285,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
                                                     placeholder={t('houseNum')}
                                                     value={formData.houseNum}
                                                     onChange={handleInputChange}
+                                                    required
                                                     className="w-full bg-transparent border-b border-color-border p-3 text-sm font-body outline-none focus:border-color-gold transition-colors placeholder:opacity-30"
                                                 />
                                                 <input

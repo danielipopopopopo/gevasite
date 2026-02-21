@@ -18,21 +18,12 @@ function App() {
   const { t, i18n } = useTranslation();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [demoTriggered, setDemoTriggered] = useState(false);
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   useEffect(() => {
     document.body.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   }, [i18n.language]);
-
-  useEffect(() => {
-    // Trigger demo order once on entry
-    if (!demoTriggered && PRODUCTS.length > 0) {
-      setCartItems([{ ...PRODUCTS[0], quantity: 1 }]);
-      setDemoTriggered(true);
-    }
-  }, [demoTriggered]);
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {
@@ -181,8 +172,6 @@ function App() {
           onRemove={removeFromCart}
           onUpdateQuantity={updateQuantity}
           onClearCart={() => setCartItems([])}
-          isDemo={demoTriggered}
-          onDemoComplete={() => setDemoTriggered(false)}
         />
       </div>
     </PayPalScriptProvider>

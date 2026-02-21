@@ -68,7 +68,7 @@ function App() {
               className="w-full h-full object-cover scale-105 opacity-40 grayscale"
               alt="Devil"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/20 to-color-bg" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-color-bg" />
             <div className="spotlight" />
           </motion.div>
 
@@ -115,7 +115,7 @@ function App() {
         </main>
 
         {/* LUXURY FOOTER */}
-        <footer className="section-luxury border-t border-color-border bg-[#050505]">
+        <footer className="section-luxury border-t border-color-border bg-color-bg-elevated">
           <div className="container-luxury grid grid-cols-12 gap-16">
             <div className="col-span-12 lg:col-span-12 text-center space-y-12 mb-12">
               <h1 className="text-5xl font-display text-shimmer italic">Devil Syndicate</h1>

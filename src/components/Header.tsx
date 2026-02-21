@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
                         initial={{ opacity: 0, scale: 0.98, y: -10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.98, y: -10 }}
-                        className="lg:hidden fixed inset-x-4 top-24 bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 flex flex-col gap-8 shadow-2xl backdrop-blur-3xl"
+                        className="lg:hidden fixed inset-x-4 top-24 bg-color-bg border border-color-border rounded-3xl p-8 flex flex-col gap-8 shadow-2xl backdrop-blur-3xl"
                     >
                         {navItems.map((item, i) => (
                             <motion.a

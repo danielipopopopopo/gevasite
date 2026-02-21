@@ -118,9 +118,9 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
 
                                             <div className="flex items-center gap-4 pt-2">
                                                 <div className="flex items-center border border-color-border rounded-sm">
-                                                    <button onClick={() => onUpdateQuantity(item.id, -1)} className="px-3 py-1 text-xs hover:bg-white/5 transition-colors">-</button>
+                                                    <button onClick={() => onUpdateQuantity(item.id, -1)} className="px-3 py-1 text-xs hover:bg-black/5 transition-colors">-</button>
                                                     <span className="px-4 text-[10px] font-bold border-x border-color-border">{item.quantity}</span>
-                                                    <button onClick={() => onUpdateQuantity(item.id, 1)} className="px-3 py-1 text-xs hover:bg-white/5 transition-colors">+</button>
+                                                    <button onClick={() => onUpdateQuantity(item.id, 1)} className="px-3 py-1 text-xs hover:bg-black/5 transition-colors">+</button>
                                                 </div>
                                             </div>
                                         </div>

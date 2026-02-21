@@ -52,6 +52,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     };
 
     console.log('AuthModal render status:', isOpen ? 'VISIBLE' : 'HIDDEN');
+    if (isOpen) {
+        window.alert('AUTH MODAL IS NOW ATTEMPTING TO SHOW (isOpen=true)');
+    }
     return (
         <AnimatePresence>
             {isOpen && (

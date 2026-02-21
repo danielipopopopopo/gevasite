@@ -32,10 +32,17 @@ function App() {
 
   useEffect(() => {
     // Show birthday popup on entry
+    console.log('App mounted, checking for birthday popup...');
     const hasSeenPopup = localStorage.getItem('birthday_popup_seen');
     if (!hasSeenPopup) {
-      const timer = setTimeout(() => setIsBirthdayPopupOpen(true), 1500);
+      console.log('Opening birthday popup in 1.5s...');
+      const timer = setTimeout(() => {
+        setIsBirthdayPopupOpen(true);
+        console.log('Birthday popup should be open now');
+      }, 1500);
       return () => clearTimeout(timer);
+    } else {
+      console.log('User already saw the popup (according to localStorage)');
     }
   }, []);
 
@@ -204,10 +211,15 @@ function App() {
         <BirthdayPopup
           isOpen={isBirthdayPopupOpen}
           onClose={() => {
+            console.log('Closing birthday popup');
             setIsBirthdayPopupOpen(false);
             localStorage.setItem('birthday_popup_seen', 'true');
           }}
-          onSignUp={() => setIsAuthModalOpen(true)}
+          onSignUp={() => {
+            console.log('Signing up from popup');
+            setIsBirthdayPopupOpen(false);
+            setIsAuthModalOpen(true);
+          }}
         />
 
         <AuthModal

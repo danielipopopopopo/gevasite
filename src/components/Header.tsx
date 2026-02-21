@@ -11,6 +11,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthClick }) => {
+    console.log('Header rendered. User:', user?.name || 'Guest');
     const { t, i18n } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -51,14 +52,20 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthCli
                         {t('language')}
                     </button>
 
-                    <button onClick={onAuthClick} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors">
+                    <button onClick={() => {
+                        console.log('Login icon clicked');
+                        onAuthClick();
+                    }} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors">
                         <User size={20} strokeWidth={1.5} />
                         {user && (
                             <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">{user.name}</span>
                         )}
                     </button>
 
-                    <button onClick={onCartClick} className="relative group p-2 text-color-text-secondary hover:text-color-gold transition-colors">
+                    <button onClick={() => {
+                        console.log('Cart icon clicked');
+                        onCartClick();
+                    }} className="relative group p-2 text-color-text-secondary hover:text-color-gold transition-colors">
                         <ShoppingBag size={20} strokeWidth={1.5} />
                         {cartCount > 0 && (
                             <span className="absolute -top-1 -right-1 bg-color-gold text-black text-[8px] w-4 h-4 flex items-center justify-center rounded-full font-bold">

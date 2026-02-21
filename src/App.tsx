@@ -45,6 +45,8 @@ function App() {
   useEffect(() => {
     // Show birthday popup on entry
     console.log('App mounted, checking for birthday popup...');
+    // ALERT TO PROVE CODE IS RUNNING
+    window.alert('DEVIL SITE DEBUG: Version 2.1 Loaded. Press Shift+R to reset popup.');
     const hasSeenPopup = localStorage.getItem('birthday_popup_seen');
     if (!hasSeenPopup) {
       console.log('Opening birthday popup in 1.5s...');
@@ -99,19 +101,19 @@ function App() {
       intent: "capture"
     }}>
       <div className="min-h-screen relative bg-color-bg">
-        {/* Diagnostic Debug Button */}
-        <div className="fixed bottom-4 left-4 z-[9999] opacity-20 hover:opacity-100 flex gap-2">
+        {/* Diagnostic Debug Button - MADE BRIGHT AND OPAQUE */}
+        <div className="fixed bottom-10 left-10 z-[10000] flex flex-col gap-4">
           <button
             onClick={() => setIsAuthModalOpen(true)}
-            className="bg-red-500 text-white p-2 text-[8px] rounded"
+            className="bg-red-600 text-white px-6 py-4 rounded-full font-bold shadow-2xl border-4 border-white"
           >
-            DEBUG LOGIN
+            FORCE LOGIN MODAL
           </button>
           <button
             onClick={() => setIsBirthdayPopupOpen(true)}
-            className="bg-blue-500 text-white p-2 text-[8px] rounded"
+            className="bg-blue-600 text-white px-6 py-4 rounded-full font-bold shadow-2xl border-4 border-white"
           >
-            DEBUG POPUP
+            FORCE POPUP MODAL
           </button>
         </div>
 

@@ -53,7 +53,11 @@ function App() {
   };
 
   return (
-    <PayPalScriptProvider options={{ clientId: "Aa9mnCReILrM5ACGUNZmpxbQXemQyR9P95QDfsIRwrsqNzEj_iPHAuhpjySn-ZpJDJaUV_w9QflxZ_X1", currency: "ILS" }}>
+    <PayPalScriptProvider options={{
+      clientId: "Aa9mnCReILrM5ACGUNZmpxbQXemQyR9P95QDfsIRwrsqNzEj_iPHAuhpjySn-ZpJDJaUV_w9QflxZ_X1",
+      currency: "ILS",
+      intent: "capture"
+    }}>
       <div className="min-h-screen relative bg-color-bg">
         <Header cartCount={cartItems.length} onCartClick={() => setIsCartOpen(true)} />
 

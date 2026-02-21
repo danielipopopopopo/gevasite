@@ -31,6 +31,18 @@ function App() {
   }, [i18n.language]);
 
   useEffect(() => {
+    // Check for existing user session
+    const savedUser = Object.keys(localStorage)
+      .filter(key => key.startsWith('user_'))
+      .map(key => JSON.parse(localStorage.getItem(key) || '{}'))[0];
+
+    if (savedUser) {
+      console.log('Session restored for:', savedUser.name);
+      setUser(savedUser);
+    }
+  }, []);
+
+  useEffect(() => {
     // Show birthday popup on entry
     console.log('App mounted, checking for birthday popup...');
     const hasSeenPopup = localStorage.getItem('birthday_popup_seen');
@@ -87,6 +99,22 @@ function App() {
       intent: "capture"
     }}>
       <div className="min-h-screen relative bg-color-bg">
+        {/* Diagnostic Debug Button */}
+        <div className="fixed bottom-4 left-4 z-[9999] opacity-20 hover:opacity-100 flex gap-2">
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
+            className="bg-red-500 text-white p-2 text-[8px] rounded"
+          >
+            DEBUG LOGIN
+          </button>
+          <button
+            onClick={() => setIsBirthdayPopupOpen(true)}
+            className="bg-blue-500 text-white p-2 text-[8px] rounded"
+          >
+            DEBUG POPUP
+          </button>
+        </div>
+
         <Header
           cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
           onCartClick={() => setIsCartOpen(true)}

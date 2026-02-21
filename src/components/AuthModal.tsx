@@ -15,6 +15,7 @@ interface AuthModalProps {
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
+    console.log('AuthModal render check. isOpen:', isOpen);
     const [isLogin, setIsLogin] = useState(false);
     const [formData, setFormData] = useState({
         name: '',

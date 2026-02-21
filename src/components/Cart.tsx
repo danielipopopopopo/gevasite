@@ -101,14 +101,20 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQ
     const handleOrderSuccess = async (details: any) => {
         const fullAddress = `${formData.city}, ${formData.street} ${formData.houseNum}, קומה ${formData.floor}, דירה ${formData.apartment}`;
         const templateParams = {
-            to_email: 'devils.stwr@gmail.com',
+            email: formData.email, // Matches {{email}} in your 'To Email' field
             from_name: formData.name,
             customer_email: formData.email,
             customer_phone: formData.phone,
             order_id: details.id,
             address: fullAddress,
-            items: items.map(i => `${i.name} x ${i.quantity}`).join(', '),
+            orders: items.map(item => ({
+                name: item.name,
+                price: item.price,
+                units: item.quantity
+            })),
             total: total,
+            'cost.shipping': 0,
+            'cost.tax': 0
         };
 
         try {

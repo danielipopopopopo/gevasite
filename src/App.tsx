@@ -54,7 +54,7 @@ function App() {
 
   return (
     <PayPalScriptProvider options={{
-      clientId: "Aa9mnCReILrM5ACGUNZmpxbQXemQyR9P95QDfsIRwrsqNzEj_iPHAuhpjySn-ZpJDJaUV_w9QflxZ_X1",
+      clientId: "AWjzZRO3I_DJHgN7lywSdBI0pg1XNUaVM-yQFaFHikkou3vyUJfVLs_296ybI00mnxE5Z756duFefTG8",
       currency: "ILS",
       intent: "capture"
     }}>

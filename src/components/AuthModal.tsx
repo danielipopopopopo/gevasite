@@ -65,7 +65,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl z-[5001] bg-color-bg-elevated border border-color-border px-12 py-8 shadow-2xl glow-red-intense"
+                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl z-[5001] glass-modal px-16 py-12 shadow-[0_30px_100px_rgba(0,0,0,0.8)] glow-red-intense rounded-[2rem]"
                     >
                         <button onClick={onClose} className="absolute top-4 right-4 text-color-text-tertiary hover:text-white">
                             <X size={20} />
@@ -88,7 +88,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                                         required
                                         type="text"
                                         placeholder="שם מלא"
-                                        className="w-full bg-black/40 border border-color-border p-4 pl-12 outline-none focus:border-color-gold transition-colors text-sm"
+                                        className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
+                                        style={{ color: 'white' }}
                                         value={formData.name}
                                         onChange={e => setFormData({ ...formData, name: e.target.value })}
                                     />
@@ -96,36 +97,39 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                             )}
 
                             <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-color-gold/40" size={16} />
+                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
                                 <input
                                     required
                                     type="email"
                                     placeholder="אימייל"
-                                    className="w-full bg-black/40 border border-color-border p-4 pl-12 outline-none focus:border-color-gold transition-colors text-sm"
+                                    className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
+                                    style={{ color: 'white' }}
                                     value={formData.email}
                                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                                 />
                             </div>
 
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-color-gold/40" size={16} />
+                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
                                 <input
                                     required
                                     type="password"
                                     placeholder="סיסמה"
-                                    className="w-full bg-black/40 border border-color-border p-4 pl-12 outline-none focus:border-color-gold transition-colors text-sm"
+                                    className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
+                                    style={{ color: 'white' }}
                                     value={formData.password}
                                     onChange={e => setFormData({ ...formData, password: e.target.value })}
                                 />
                             </div>
 
                             {!isLogin && (
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-color-text-tertiary flex items-center gap-2">
-                                        <Calendar size={12} /> חודש יום הולדת (להנחה בלעדית)
+                                <div className="space-y-3">
+                                    <label className="text-[10px] uppercase tracking-[0.2em] text-color-gold flex items-center gap-3">
+                                        <Calendar size={14} /> חודש יום הולדת (להנחה בלעדית)
                                     </label>
                                     <select
-                                        className="w-full bg-black/40 border border-color-border p-4 outline-none focus:border-color-gold transition-colors text-sm appearance-none cursor-pointer"
+                                        className="modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none"
+                                        style={{ color: 'white' }}
                                         value={formData.birthMonth}
                                         onChange={e => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
                                     >

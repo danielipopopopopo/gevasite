@@ -53,37 +53,37 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     return (
         <AnimatePresence>
             {isOpen && (
-                <>
+                <div className="fixed inset-0 z-[5000] flex items-center justify-center p-4">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/90 z-[5000] backdrop-blur-md"
+                        className="absolute inset-0 bg-black/90 backdrop-blur-xl"
                     />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl z-[5001] glass-modal px-16 py-12 shadow-[0_30px_100px_rgba(0,0,0,0.8)] glow-red-intense rounded-[2rem]"
+                        className="relative w-full max-w-2xl z-[5001] glass-modal px-16 py-12 shadow-[0_30px_100px_rgba(0,0,0,0.8)] glow-red-intense rounded-[2rem]"
                     >
-                        <button onClick={onClose} className="absolute top-4 right-4 text-color-text-tertiary hover:text-white">
-                            <X size={20} />
+                        <button onClick={onClose} className="absolute top-6 right-8 text-color-text-tertiary hover:text-white transition-colors">
+                            <X size={24} />
                         </button>
 
-                        <div className="text-center space-y-1 mb-6">
-                            <h2 className="text-3xl font-display italic text-color-gold glow-text-red-intense">
+                        <div className="text-center space-y-1 mb-10">
+                            <h2 className="text-4xl font-display italic text-color-gold glow-text-red-intense">
                                 {isLogin ? 'התחברות' : 'הרשמה לסיינדיקט'}
                             </h2>
-                            <p className="text-[10px] uppercase tracking-widest text-color-text-tertiary">
+                            <p className="text-[10px] uppercase tracking-[0.3em] text-color-text-tertiary opacity-60">
                                 Devil Streetwear Premium Access
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             {!isLogin && (
                                 <div className="relative">
-                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-color-gold/40" size={16} />
+                                    <User className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
                                     <input
                                         required
                                         type="text"
@@ -140,19 +140,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                                 </div>
                             )}
 
-                            <button type="submit" className="btn-luxury w-full py-4 mt-4 text-sm tracking-[0.3em]">
+                            <button type="submit" className="btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em]">
                                 {isLogin ? 'התחבר' : 'צור חשבון'}
                             </button>
                         </form>
 
                         <button
                             onClick={() => setIsLogin(!isLogin)}
-                            className="w-full text-center mt-6 text-[10px] uppercase tracking-widest text-color-text-tertiary hover:text-color-gold transition-colors"
+                            className="w-full text-center mt-10 text-[10px] uppercase tracking-[0.2em] text-color-text-tertiary hover:text-color-gold transition-colors"
                         >
                             {isLogin ? 'עדיין לא חבר? הירשם כאן' : 'כבר חבר? התחבר כאן'}
                         </button>
                     </motion.div>
-                </>
+                </div>
             )}
         </AnimatePresence>
     );

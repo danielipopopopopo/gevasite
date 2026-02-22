@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, Calendar } from 'lucide-react';
+import { X, Mail, Lock, Cake, Calendar } from 'lucide-react';
 
 interface UserData {
     name: string;
@@ -15,39 +15,17 @@ interface AuthModalProps {
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
-    const [isLogin, setIsLogin] = useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        birthMonth: new Date().getMonth() + 1
-    });
-
-    const MONTHS_HE = [
-        'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
-        'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Simple localStorage mock auth
-        if (isLogin) {
-            const saved = localStorage.getItem(`user_${formData.email}`);
-            if (saved) {
-                onSuccess(JSON.parse(saved));
-            } else {
-                alert('משתמש לא נמצא');
-            }
-        } else {
-            const newUser = {
-                name: formData.name,
-                email: formData.email,
-                birthMonth: formData.birthMonth
-            };
-            localStorage.setItem(`user_${formData.email}`, JSON.stringify(newUser));
-            onSuccess(newUser);
-        }
+        const userData = {
+            name: 'Member',
+            email: 'member@syndicate.com',
+            birthMonth: formData.birthMonth
+        };
+
+        localStorage.setItem('birthday_user', JSON.stringify(userData));
+        onSuccess(userData);
     };
 
     return (
@@ -73,84 +51,34 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
 
                         <div className="text-center space-y-1 mb-10">
                             <h2 className="text-4xl font-display italic text-color-gold glow-text-red-intense">
-                                {isLogin ? 'התחברות' : 'הרשמה לסיינדיקט'}
+                                עדכון יום הולדת
                             </h2>
                             <p className="text-[10px] uppercase tracking-[0.3em] text-color-text-tertiary opacity-60">
-                                Devil Streetwear Premium Access
+                                Get Your Exclusive Birthday Discount
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            {!isLogin && (
-                                <div className="relative">
-                                    <User className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
-                                    <input
-                                        required
-                                        type="text"
-                                        placeholder="שם מלא"
-                                        className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
-                                        style={{ color: 'white' }}
-                                        value={formData.name}
-                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    />
-                                </div>
-                            )}
-
-                            <div className="relative">
-                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
-                                <input
-                                    required
-                                    type="email"
-                                    placeholder="אימייל"
-                                    className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="space-y-3">
+                                <label className="text-[10px] uppercase tracking-[0.2em] text-color-gold flex items-center gap-3">
+                                    <Calendar size={14} /> חודש יום הולדת (להנחה בלעדית)
+                                </label>
+                                <select
+                                    className="modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none"
                                     style={{ color: 'white' }}
-                                    value={formData.email}
-                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                />
+                                    value={formData.birthMonth}
+                                    onChange={e => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
+                                >
+                                    {MONTHS_HE.map((month, idx) => (
+                                        <option key={idx} value={idx + 1}>{month}</option>
+                                    ))}
+                                </select>
                             </div>
-
-                            <div className="relative">
-                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-color-gold/40" size={18} />
-                                <input
-                                    required
-                                    type="password"
-                                    placeholder="סיסמה"
-                                    className="modal-input w-full p-5 pl-14 outline-none transition-all text-sm text-white rounded-xl"
-                                    style={{ color: 'white' }}
-                                    value={formData.password}
-                                    onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                />
-                            </div>
-
-                            {!isLogin && (
-                                <div className="space-y-3">
-                                    <label className="text-[10px] uppercase tracking-[0.2em] text-color-gold flex items-center gap-3">
-                                        <Calendar size={14} /> חודש יום הולדת (להנחה בלעדית)
-                                    </label>
-                                    <select
-                                        className="modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none"
-                                        style={{ color: 'white' }}
-                                        value={formData.birthMonth}
-                                        onChange={e => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
-                                    >
-                                        {MONTHS_HE.map((month, idx) => (
-                                            <option key={idx} value={idx + 1}>{month}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
 
                             <button type="submit" className="btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em]">
-                                {isLogin ? 'התחבר' : 'צור חשבון'}
+                                עדכן יום הולדת
                             </button>
                         </form>
-
-                        <button
-                            onClick={() => setIsLogin(!isLogin)}
-                            className="w-full text-center mt-10 text-[10px] uppercase tracking-[0.2em] text-color-text-tertiary hover:text-color-gold transition-colors"
-                        >
-                            {isLogin ? 'עדיין לא חבר? הירשם כאן' : 'כבר חבר? התחבר כאן'}
-                        </button>
                     </motion.div>
                 </div>
             )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, ShoppingBag, User } from 'lucide-react';
+import { Menu, X, ShoppingBag, Cake } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -52,9 +52,9 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthCli
                     </button>
 
                     <button onClick={onAuthClick} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors">
-                        <User size={20} strokeWidth={1.5} />
+                        <Cake size={20} strokeWidth={1.5} />
                         {user && (
-                            <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">{user.name}</span>
+                            <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">{user.name || 'יום הולדת'}</span>
                         )}
                     </button>
 

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar } from 'lucide-react';
+import { X, Calendar, Lock } from 'lucide-react';
 
 interface UserData {
     name: string;
@@ -23,9 +23,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     const [formData, setFormData] = useState({
         birthMonth: new Date().getMonth() + 1
     });
+    const [isLocked, setIsLocked] = useState(false);
+
+    useEffect(() => {
+        const saved = localStorage.getItem('birthday_user');
+        if (saved) {
+            const userData = JSON.parse(saved);
+            setFormData({ birthMonth: userData.birthMonth });
+            setIsLocked(true);
+        } else {
+            setIsLocked(false);
+        }
+    }, [isOpen]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (isLocked) return;
 
         const userData = {
             name: 'Member',
@@ -34,6 +47,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
         };
 
         localStorage.setItem('birthday_user', JSON.stringify(userData));
+        setIsLocked(true);
         onSuccess(userData);
     };
 
@@ -60,20 +74,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
 
                         <div className="text-center space-y-1 mb-10">
                             <h2 className="text-4xl font-display italic text-color-gold glow-text-red-intense">
-                                עדכון יום הולדת
+                                {isLocked ? 'יום הולדת נשמר' : 'עדכון יום הולדת'}
                             </h2>
                             <p className="text-[10px] uppercase tracking-[0.3em] text-color-text-tertiary opacity-60">
-                                Get Your Exclusive Birthday Discount
+                                {isLocked ? 'Your discount is verified' : 'Get Your Exclusive Birthday Discount'}
                             </p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-3">
                                 <label className="text-[10px] uppercase tracking-[0.2em] text-color-gold flex items-center gap-3">
-                                    <Calendar size={14} /> חודש יום הולדת (להנחה בלעדית)
+                                    {isLocked ? <Lock size={14} /> : <Calendar size={14} />}
+                                    חודש יום הולדת (להנחה בלעדית)
                                 </label>
                                 <select
-                                    className="modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none"
+                                    disabled={isLocked}
+                                    className={`modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none ${isLocked ? 'opacity-50 cursor-not-allowed border-white/5' : ''}`}
                                     style={{ color: 'white' }}
                                     value={formData.birthMonth}
                                     onChange={e => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
@@ -84,8 +100,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                                 </select>
                             </div>
 
-                            <button type="submit" className="btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em]">
-                                עדכן יום הולדת
+                            <button
+                                type="submit"
+                                disabled={isLocked}
+                                className={`btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em] transition-all ${isLocked ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
+                            >
+                                {isLocked ? 'יום הולדת מאומת' : 'עדכן יום הולדת'}
                             </button>
                         </form>
                     </motion.div>

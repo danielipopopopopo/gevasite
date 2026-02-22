@@ -9,10 +9,6 @@ interface BirthdayPopupProps {
 }
 
 const BirthdayPopup: React.FC<BirthdayPopupProps> = ({ isOpen, onClose, onSignUp }) => {
-    console.log('BirthdayPopup render check. isOpen:', isOpen);
-    if (isOpen) {
-        window.alert('BIRTHDAY POPUP IS NOW ATTEMPTING TO SHOW (isOpen=true)');
-    }
     return (
         <AnimatePresence>
             {isOpen && (

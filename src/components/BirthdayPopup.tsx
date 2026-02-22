@@ -27,7 +27,7 @@ const BirthdayPopup: React.FC<BirthdayPopupProps> = ({ isOpen, onClose, onSignUp
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md z-[5001] bg-color-bg-elevated border border-color-gold/30 p-8 text-center space-y-6 shadow-[0_0_50px_rgba(212,175,55,0.1)]"
+                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-xl z-[5001] bg-color-bg-elevated border border-color-gold/30 px-12 py-6 text-center space-y-4 shadow-2xl glow-red"
                     >
                         <button
                             onClick={onClose}
@@ -36,8 +36,8 @@ const BirthdayPopup: React.FC<BirthdayPopupProps> = ({ isOpen, onClose, onSignUp
                             <X size={20} />
                         </button>
 
-                        <div className="space-y-2">
-                            <h2 className="text-3xl font-display italic text-color-gold">מזל טוב?</h2>
+                        <div className="space-y-1">
+                            <h2 className="text-3xl font-display italic text-color-gold glow-text-red">מזל טוב?</h2>
                             <div className="h-px w-12 bg-color-gold/30 mx-auto" />
                         </div>
 

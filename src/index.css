@@ -829,6 +829,19 @@ textarea {
   gap: 1rem;
 }
 
+.max-w-xl {
+  max-width: 36rem;
+}
+
+.glow-red {
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.2), inset 0 0 15px rgba(255, 0, 0, 0.1);
+  border-color: rgba(255, 0, 0, 0.4) !important;
+}
+
+.glow-text-red {
+  text-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+}
+
 .shadow-2xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }

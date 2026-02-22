@@ -65,14 +65,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-md z-[5001] bg-color-bg-elevated border border-color-border p-8 shadow-2xl"
+                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-xl z-[5001] bg-color-bg-elevated border border-color-border px-12 py-6 shadow-2xl glow-red"
                     >
                         <button onClick={onClose} className="absolute top-4 right-4 text-color-text-tertiary hover:text-white">
                             <X size={20} />
                         </button>
 
-                        <div className="text-center space-y-2 mb-8">
-                            <h2 className="text-2xl font-display italic text-color-gold">
+                        <div className="text-center space-y-1 mb-6">
+                            <h2 className="text-2xl font-display italic text-color-gold glow-text-red">
                                 {isLogin ? 'התחברות' : 'הרשמה לסיינדיקט'}
                             </h2>
                             <p className="text-[10px] uppercase tracking-widest text-color-text-tertiary">

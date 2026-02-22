@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, Cake, Calendar } from 'lucide-react';
+import { X, Calendar } from 'lucide-react';
 
 interface UserData {
     name: string;
@@ -14,7 +14,16 @@ interface AuthModalProps {
     onSuccess: (user: UserData) => void;
 }
 
+const MONTHS_HE = [
+    'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
+    'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
+];
+
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
+    const [formData, setFormData] = useState({
+        birthMonth: new Date().getMonth() + 1
+    });
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 

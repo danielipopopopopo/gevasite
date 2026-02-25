@@ -21,7 +21,7 @@ const MONTHS_HE = [
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
     const [formData, setFormData] = useState({
-        birthMonth: new Date().getMonth() + 1
+        birthMonth: 0 // Default to 0 to force an interaction
     });
     const [isLocked, setIsLocked] = useState(false);
 
@@ -32,13 +32,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
             setFormData({ birthMonth: userData.birthMonth });
             setIsLocked(true);
         } else {
+            setFormData({ birthMonth: 0 }); // Reset on open if not saved
             setIsLocked(false);
         }
     }, [isOpen]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isLocked) return;
+        if (isLocked || formData.birthMonth === 0) return;
 
         const userData = {
             name: 'Member',
@@ -89,23 +90,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                                 </label>
                                 <select
                                     disabled={isLocked}
+                                    required
                                     className={`modal-input w-full p-5 outline-none cursor-pointer text-sm text-white rounded-xl appearance-none ${isLocked ? 'opacity-50 cursor-not-allowed border-white/5' : ''}`}
                                     style={{ color: 'white' }}
                                     value={formData.birthMonth}
                                     onChange={e => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
                                 >
+                                    <option value={0} disabled className="bg-color-bg text-white/20 italic">בחר חודש...</option>
                                     {MONTHS_HE.map((month, idx) => (
-                                        <option key={idx} value={idx + 1}>{month}</option>
+                                        <option key={idx} value={idx + 1} className="bg-color-bg text-white">{month}</option>
                                     ))}
                                 </select>
                             </div>
 
                             <button
                                 type="submit"
-                                disabled={isLocked}
-                                className={`btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em] transition-all ${isLocked ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
+                                disabled={isLocked || formData.birthMonth === 0}
+                                className={`btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em] transition-all ${isLocked || formData.birthMonth === 0 ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
                             >
-                                {isLocked ? 'יום הולדת מאומת' : 'עדכן יום הולדת'}
+                                {isLocked ? 'יום הולדת נבחר' : 'עדכן יום הולדת'}
                             </button>
                         </form>
                     </motion.div>

@@ -32,13 +32,11 @@ function App() {
 
   useEffect(() => {
     // Check for existing user session
-    const savedUser = Object.keys(localStorage)
-      .filter(key => key.startsWith('user_'))
-      .map(key => JSON.parse(localStorage.getItem(key) || '{}'))[0];
-
-    if (savedUser) {
-      console.log('Session restored for:', savedUser.name);
-      setUser(savedUser);
+    const savedBirthdayUser = localStorage.getItem('birthday_user');
+    if (savedBirthdayUser) {
+      const parsed = JSON.parse(savedBirthdayUser);
+      console.log('Birthday session restored for:', parsed.name);
+      setUser(parsed);
     }
   }, []);
 

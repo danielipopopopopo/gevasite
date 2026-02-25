@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, ShoppingBag, Cake } from 'lucide-react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
+import DemonLogo from './DemonLogo';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -33,9 +34,12 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthCli
                         {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
 
-                    <h1 className="text-2xl lg:text-3xl font-display text-shimmer tracking-tighter cursor-default">
-                        Devil
-                    </h1>
+                    <div className="flex items-center gap-3">
+                        <DemonLogo size={28} className="text-color-gold glow-red-sm" />
+                        <h1 className="text-2xl lg:text-3xl font-display text-shimmer tracking-tighter cursor-default">
+                            Devil
+                        </h1>
+                    </div>
 
                     <nav className="hidden lg:flex gap-10">
                         {navItems.map((item) => (
@@ -51,10 +55,18 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, user, onAuthCli
                         {t('language')}
                     </button>
 
-                    <button onClick={onAuthClick} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors">
-                        <Cake size={20} strokeWidth={1.5} />
+                    <button onClick={onAuthClick} className="flex items-center gap-2 text-color-text-secondary hover:text-color-gold transition-colors group">
+                        <div className="relative">
+                            <DemonLogo size={20} className="text-color-gold/60 group-hover:text-color-gold transition-colors" />
+                            {user && <div className="absolute -top-1 -right-1 w-2 h-2 bg-color-gold rounded-full shadow-[0_0_8px_rgba(212,175,55,0.8)]" />}
+                        </div>
                         {user && (
-                            <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">{user.name || 'יום הולדת'}</span>
+                            <span className="hidden lg:block text-[9px] font-bold uppercase tracking-widest">
+                                D.O.B: {user.birthMonth ? [
+                                    'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
+                                    'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
+                                ][user.birthMonth - 1] : 'יום הולדת'}
+                            </span>
                         )}
                     </button>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Lock } from 'lucide-react';
+import DemonLogo from './DemonLogo';
 
 interface UserData {
     name: string;
@@ -74,11 +75,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                         </button>
 
                         <div className="text-center space-y-1 mb-10">
+                            <div className="flex justify-center mb-4">
+                                <DemonLogo size={48} className="text-color-gold glow-red-intense" />
+                            </div>
                             <h2 className="text-4xl font-display italic text-color-gold glow-text-red-intense">
-                                {isLocked ? 'יום הולדת נשמר' : 'עדכון יום הולדת'}
+                                {isLocked ? `יום הולדת: ${MONTHS_HE[formData.birthMonth - 1]}` : 'עדכון יום הולדת'}
                             </h2>
                             <p className="text-[10px] uppercase tracking-[0.3em] text-color-text-tertiary opacity-60">
-                                {isLocked ? 'Your discount is verified' : 'Get Your Exclusive Birthday Discount'}
+                                {isLocked ? 'Your discount is verified and active' : 'Get Your Exclusive Birthday Discount'}
                             </p>
                         </div>
 
@@ -108,7 +112,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                                 disabled={isLocked || formData.birthMonth === 0}
                                 className={`btn-luxury w-full py-5 mt-6 text-sm tracking-[0.4em] transition-all ${isLocked || formData.birthMonth === 0 ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
                             >
-                                {isLocked ? 'יום הולדת נבחר' : 'עדכן יום הולדת'}
+                                {isLocked ? `נבחר: ${MONTHS_HE[formData.birthMonth - 1]}` : 'עדכן יום הולדת'}
                             </button>
                         </form>
                     </motion.div>

@@ -6,6 +6,7 @@ import Header from './components/Header';
 import ProductCard from './components/ProductCard';
 import Cart from './components/Cart';
 import AuthModal from './components/AuthModal';
+import DemonLogo from './components/DemonLogo';
 import BirthdayPopup from './components/BirthdayPopup';
 import type { Product } from './data/products';
 import { PRODUCTS } from './data/products';
@@ -123,9 +124,18 @@ function App() {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6"
             >
-              <h1 className="text-7xl lg:text-[10rem] font-display text-shimmer leading-none italic pb-2">
-                Devil
-              </h1>
+              <div className="flex flex-col items-center gap-4">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                >
+                  <DemonLogo size={120} className="text-color-gold glow-red-intense" />
+                </motion.div>
+                <h1 className="text-7xl lg:text-[10rem] font-display text-shimmer leading-none italic pb-2">
+                  Devil
+                </h1>
+              </div>
               <p className="text-[10px] lg:text-[12px] font-medium uppercase tracking-[0.8em] text-color-text-secondary">
                 {t('hero_subtitle')}
               </p>
